@@ -1,0 +1,192 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(0, 0, 0);
+  width: 100%;
+}
+
+footer {
+  width: 100vw;
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  background-color: black;
+  box-shadow: -2px 0 3px 2px rgb(153, 153, 153);
+}
+
+main {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 100px;
+}
+
+h2 {
+  font-size: 25px;
+  color: rgb(143, 143, 143);
+  font-weight: 100;
+  font-family: Helvetica, sans-serif;
+  line-height: 50px;
+  text-align: center;
+}
+
+a {
+  color: rgb(255, 255, 255);
+}
+
+.box-new-task {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+}
+
+input {
+  outline: 0;
+  border: 0;
+  background-color: white;
+  font-family: Helvetica, sans-serif;
+  color: rgb(31, 31, 31);
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 7px;
+  height: 40px;
+}
+
+input:focus,
+input:hover {
+  background-color: rgb(154, 175, 221);
+  border: 2px solid rgb(72, 11, 11);
+}
+
+.add {
+  outline: 0;
+  border: 0;
+  background-color: rgb(66, 83, 182);
+  border-radius: 7px;
+  height: 40px;
+  padding: 2px 10px;
+  font-size: 16px;
+  margin-left: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.add:hover {
+  background-color: rgb(83, 148, 223);
+}
+
+.box-tasks {
+  background-color: white;
+  margin-top: 10px;
+  width: 300px;
+  padding: 20px 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.task {
+  margin-bottom: 10px;
+  border-bottom: 1.5px solid rgb(0, 0, 0);
+
+  background-color: rgb(80, 103, 202);
+
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  justify-content: space-between;
+
+  color: white;
+}
+
+.task p {
+  font-size: 14px;
+  font-family: Helvetica, sans-serif;
+}
+
+.task span {
+  display: flex;
+}
+
+i {
+  margin-bottom: 3px;
+}
+
+i:hover {
+  font-size: 19px;
+  margin-bottom: 0;
+}
+
+.icon-ok {
+  color: rgb(119, 235, 24);
+  margin-right: 4px;
+}
+
+.icon-trashcan {
+  color: rgb(213, 33, 33);
+}
+
+.error {
+  border: 1px solid red;
+}
+
+.error::placeholder {
+  color: red;
+}
+
+.task.complete {
+  background-color: rgba(75, 75, 75, 0.397);
+}
+
+.task.complete p {
+  text-decoration: line-through;
+  color: black;
+}
+
+@media (max-width: 400px) {
+  .box-new-task {
+    width: calc(100vw - 20px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  input {
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .add {
+    font-size: 13px;
+  }
+
+  .box-tasks {
+    background-color: white;
+    margin-top: 10px;
+    width: calc(100vw - 20px);
+    padding: 10px 10px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 280px) {
+  input {
+    font-size: 10px;
+    width: 100%;
+  }
+
+  .add {
+    font-size: 10px;
+  }
+}
