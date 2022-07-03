@@ -1,12 +1,8 @@
-/* passo a passo 
-1- fazer funcao para adicionar uma tarefa com o texto inserido apartir do botao
-*/
 const input = document.getElementById('input')
 const boxTasks = document.querySelector('.box-tasks')
 const elementEmpty = document.createElement('div')
 
 var taskQuant = 0
-var elementDel = 0
 
 function addtask() {
   var inputTrim = document.getElementById('input').value.trim()
@@ -15,7 +11,12 @@ function addtask() {
     input.classList.add('error')
     input.value = ''
     input.setAttribute('placeholder', 'Digite caracteres validos')
+    input.focus()
   } else {
+    // arrumando o input
+    input.classList.remove('error')
+    input.setAttribute('placeholder', 'Nova tarefa...')
+
     // task atual
     const task = document.getElementsByClassName('task')
 
@@ -80,7 +81,81 @@ function addtask() {
 
       if (iconClicked) {
         novaTask.classList.toggle('complete')
+        if (novaTask.classList.contains('complete')) {
+          novaTask.style.backgroundColor = '#4b4b4b'
+        } else {
+          changeTaskAndButtons()
+        }
       }
     }
   }
+
+  changeTaskAndButtons()
+}
+
+var valueBtn
+var open = document.querySelector('.changeTheme')
+var close = document.querySelector('.icon-cross')
+
+function aparecer() {
+  var change = document.querySelector('.changeBox')
+  change.style.display = 'block'
+}
+
+function sumir() {
+  var change = document.querySelector('.changeBox')
+  change.style.display = 'none'
+}
+
+close.addEventListener('click', sumir)
+open.addEventListener('click', aparecer)
+
+var mexeu = false
+
+function changeTaskAndButtons() {
+  var buttonAdd = document.querySelector('button.add')
+  var tasks = document.querySelectorAll('.task:not(.complete)')
+  var changeBtn = document.querySelector('.changeTheme')
+  var saveBtn = document.querySelector('.save')
+  if (mexeu) {
+    buttonAdd.style.backgroundColor = valueBtn
+    changeBtn.style.backgroundColor = valueBtn
+    saveBtn.style.backgroundColor = valueBtn
+
+    for (const task of tasks) {
+      task.style.backgroundColor = valueBtn
+    }
+  } else {
+    tasksAndButtons()
+  }
+}
+
+function tasksAndButtons() {
+  var valueTaskButton = document.getElementById('tasksAndButtons').value
+  var buttonAdd = document.querySelector('button.add')
+  var tasks = document.querySelectorAll('.task:not(.complete)')
+  var changeBtn = document.querySelector('.changeTheme')
+  var saveBtn = document.querySelector('.save')
+  valueBtn = valueTaskButton
+
+  buttonAdd.style.backgroundColor = valueTaskButton
+  changeBtn.style.backgroundColor = valueTaskButton
+  saveBtn.style.backgroundColor = valueTaskButton
+
+  for (const task of tasks) {
+    task.style.backgroundColor = valueTaskButton
+  }
+}
+
+function changeAction() {
+  var valueBackground = document.getElementById('background').value
+
+  var body = document.getElementById('body')
+  let footer = document.getElementById('footer')
+
+  body.style.backgroundColor = valueBackground
+  footer.style.backgroundColor = valueBackground
+
+  mexeu = true
+  tasksAndButtons()
 }

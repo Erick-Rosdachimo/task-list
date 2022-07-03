@@ -7,10 +7,29 @@
 
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="icons/style.css" />
+    <link rel="stylesheet" href="icon-close/style.css" />
 
     <title>Lista de tarefas</title>
   </head>
-  <body>
+  <body id="body">
+    <section class="changeBox">
+      <div class="iconBox"><div class="icon-cross"></div></div>
+      <div class="container">
+        <h2>Mude a cor do layout aqui!</h2>
+
+        <span class="span background">
+          <label for="background">Cor de fundo:</label>
+          <input id="background" type="color" />
+        </span>
+        <span class="span tasksAndButtons">
+          <label for="tasksAndButtons">Tarefas e botoes:</label>
+          <input value="#4d57ab" id="tasksAndButtons" type="color" />
+        </span>
+
+        <button onclick="changeAction()" class="save">Salvar</button>
+      </div>
+    </section>
+    <button class="changeTheme">Mudar tema</button>
     <main>
       <div class="box-new-task">
         <input id="input" type="text" placeholder="Nova tarefa..." />
@@ -20,7 +39,7 @@
       <div class="box-tasks"></div>
     </main>
 
-    <footer>
+    <footer id="footer">
       <h2>
         Feito por:
         <a target="_blank" href="https://erick-rosdachimo.github.io/portifolio/"
