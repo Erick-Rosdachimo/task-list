@@ -1,12 +1,11 @@
 const input = document.getElementById('input')
 const boxTasks = document.querySelector('.box-tasks')
-const elementEmpty = document.createElement('div')
-
-var taskQuant = 0
 
 function addtask() {
-  var inputTrim = document.getElementById('input').value.trim()
-  inputTrim = inputTrim.length
+  // Selecionando a quantidade de elementos escritos sem os espaços
+  var inputTrim = document.getElementById('input').value.trim().length
+
+  // Verifica se oque foi escrito é valido
   if (inputTrim == 0) {
     input.classList.add('error')
     input.value = ''
@@ -17,7 +16,7 @@ function addtask() {
     input.classList.remove('error')
     input.setAttribute('placeholder', 'Nova tarefa...')
 
-    // task atual
+    // Todas as tasks
     const task = document.getElementsByClassName('task')
 
     // criando os elementos
@@ -32,10 +31,10 @@ function addtask() {
     novaTaskI1.classList.add('icon-ok')
     novaTaskI2.classList.add('icon-trashcan')
 
+    // Adicionando o EventListener com as funções para deletar e completar as tarefas
     novaTaskI1.addEventListener('click', () => complete(novaTask, novaTaskP))
-
     novaTaskI2.addEventListener('click', () =>
-      handleDeleteClick(novaTask, novaTaskP)
+      deletarTarefa(novaTask, novaTaskP)
     )
 
     // colocando o texto
@@ -43,42 +42,42 @@ function addtask() {
 
     //posicionando os elementos
     boxTasks.appendChild(novaTask)
+    task[task.length - 1].appendChild(novaTaskP)
+    task[task.length - 1].appendChild(novaTaskSpan)
+    novaTaskSpan.appendChild(novaTaskI1)
+    novaTaskSpan.appendChild(novaTaskI2)
 
-    task[taskQuant].appendChild(novaTaskP)
-    input.value = ''
-    task[taskQuant].appendChild(novaTaskSpan)
+    if (localStorage.localS == undefined) {
+      localStorage.localS = input.value + '%'
+    } else {
+      localStorage.localS = localStorage.localS + input.value + '%'
+    }
 
-    // ------ span atual ------
-    const spanAtual = task[taskQuant].lastChild
-
-    spanAtual.appendChild(novaTaskI1)
-    spanAtual.appendChild(novaTaskI2)
-
-    taskQuant = taskQuant + 1
+    // Finalizando
     input.value = ''
     input.focus()
   }
 
-  const handleDeleteClick = (novaTask, novaTaskP) => {
+  // Deletar as tarefas
+  const deletarTarefa = (novaTask, novaTaskP) => {
+    // Todas as tasks
     const tasks = boxTasks.childNodes
-
     for (const task of tasks) {
       const currentTaskIsBeingClicked = task.firstChild.isSameNode(novaTaskP)
-
       if (currentTaskIsBeingClicked) {
+        let splitOne = localStorage.localS.split(novaTaskP.innerHTML + '%')
+        localStorage.localS = splitOne[0] + splitOne[1]
+        console.log(localStorage.localS)
         novaTask.remove()
       }
     }
-
-    taskQuant = taskQuant - 1
   }
 
+  // Completar as tarefas
   const complete = (novaTask, novaTaskP) => {
     const tasks = boxTasks.childNodes
-
     for (const task of tasks) {
       const iconClicked = task.firstChild.isSameNode(novaTaskP)
-
       if (iconClicked) {
         novaTask.classList.toggle('complete')
         if (novaTask.classList.contains('complete')) {
@@ -89,28 +88,27 @@ function addtask() {
       }
     }
   }
-
   changeTaskAndButtons()
 }
 
-var valueBtn
-var open = document.querySelector('.changeTheme')
-var close = document.querySelector('.icon-cross')
+let valueBtn
+let open = document.querySelector('.changeTheme')
+let close = document.querySelector('.icon-cross')
 
-function aparecer() {
+function abreMudarCor() {
   var change = document.querySelector('.changeBox')
   change.style.display = 'block'
 }
 
-function sumir() {
+function fechaMudarCor() {
   var change = document.querySelector('.changeBox')
   change.style.display = 'none'
 }
 
-close.addEventListener('click', sumir)
-open.addEventListener('click', aparecer)
+close.addEventListener('click', fechaMudarCor)
+open.addEventListener('click', abreMudarCor)
 
-var mexeu = false
+let mexeu = false
 
 function changeTaskAndButtons() {
   var buttonAdd = document.querySelector('button.add')
@@ -158,4 +156,5 @@ function changeAction() {
 
   mexeu = true
   tasksAndButtons()
+  fechaMudarCor()
 }
