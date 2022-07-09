@@ -1,3 +1,112 @@
+// AO CARREGAR A PAGINA
+window.addEventListener('load', () => {
+  let arrayElements = localStorage.localS.split('<%')
+  let tasksContadas = 1
+
+  for (const element of arrayElements) {
+    if (tasksContadas == arrayElements.length) {
+    } else {
+      tasksContadas = tasksContadas + 1
+      // Todas as tasks
+      const task = document.getElementsByClassName('task')
+
+      // criando os elementos
+      const novaTask = document.createElement('div')
+      const novaTaskP = document.createElement('p')
+      const novaTaskSpan = document.createElement('span')
+      const novaTaskI1 = document.createElement('i')
+      const novaTaskI2 = document.createElement('i')
+
+      // nomeando os elementos
+      novaTask.classList.add('task')
+      novaTaskI1.classList.add('icon-ok')
+      novaTaskI2.classList.add('icon-trashcan')
+
+      // Adicionando o EventListener com as funções para deletar e completar as tarefas
+      novaTaskI1.addEventListener('click', () => complete(novaTask, novaTaskP))
+      novaTaskI2.addEventListener('click', () =>
+        deletarTarefa(novaTask, novaTaskP)
+      )
+
+      // colocando o texto
+      if (localStorage.localS.search(element + '<%/') >= 0) {
+        novaTask.classList.add('complete')
+        novaTask.style.backgroundColor = '#4b4b4b'
+        if (element[0] == '/') {
+          novaTaskP.textContent = element.slice(1)
+        } else {
+          novaTaskP.textContent = element
+        }
+      } else {
+        if (element[0] == '/') {
+          novaTaskP.textContent = element.slice(1)
+        } else {
+          novaTaskP.textContent = element
+        }
+      }
+
+      //posicionando os elementos
+      boxTasks.appendChild(novaTask)
+      task[task.length - 1].appendChild(novaTaskP)
+      task[task.length - 1].appendChild(novaTaskSpan)
+      novaTaskSpan.appendChild(novaTaskI1)
+      novaTaskSpan.appendChild(novaTaskI2)
+
+      // Deletar as tarefas
+      const deletarTarefa = (novaTask, novaTaskP) => {
+        // Todas as tasks
+        const tasks = boxTasks.childNodes
+        for (const task of tasks) {
+          const currentTaskIsBeingClicked =
+            task.firstChild.isSameNode(novaTaskP)
+          if (currentTaskIsBeingClicked) {
+            let splitOne
+            if (localStorage.localS.search(novaTaskP.innerHTML + '<%/') >= 0) {
+              splitOne = localStorage.localS.split(novaTaskP.innerHTML + '<%/')
+            } else {
+              splitOne = localStorage.localS.split(novaTaskP.innerHTML + '<%')
+            }
+            localStorage.localS = splitOne[0] + splitOne[1]
+            console.log(localStorage.localS)
+            novaTask.remove()
+          }
+        }
+      }
+
+      // Completar as tarefas
+      const complete = (novaTask, novaTaskP) => {
+        const tasks = boxTasks.childNodes
+        for (const task of tasks) {
+          const iconClicked = task.firstChild.isSameNode(novaTaskP)
+          if (iconClicked) {
+            if (localStorage.localS.search(novaTaskP.innerHTML + '<%/') >= 0) {
+              localStorage.localS = localStorage.localS.replace(
+                novaTaskP.innerHTML + '<%/',
+                novaTaskP.innerHTML + '<%'
+              )
+            } else {
+              localStorage.localS = localStorage.localS.replace(
+                novaTaskP.innerHTML + '<%',
+                novaTaskP.innerHTML + '<%/'
+              )
+            }
+
+            novaTask.classList.toggle('complete')
+            if (novaTask.classList.contains('complete')) {
+              novaTask.style.backgroundColor = '#4b4b4b'
+            } else {
+              changeTaskAndButtons()
+            }
+          }
+        }
+      }
+
+      // Finalizando
+      input.focus()
+    }
+  }
+})
+
 const input = document.getElementById('input')
 const boxTasks = document.querySelector('.box-tasks')
 
@@ -48,9 +157,9 @@ function addtask() {
     novaTaskSpan.appendChild(novaTaskI2)
 
     if (localStorage.localS == undefined) {
-      localStorage.localS = input.value + '%'
+      localStorage.localS = input.value + '<%'
     } else {
-      localStorage.localS = localStorage.localS + input.value + '%'
+      localStorage.localS = localStorage.localS + input.value + '<%'
     }
 
     // Finalizando
@@ -65,7 +174,12 @@ function addtask() {
     for (const task of tasks) {
       const currentTaskIsBeingClicked = task.firstChild.isSameNode(novaTaskP)
       if (currentTaskIsBeingClicked) {
-        let splitOne = localStorage.localS.split(novaTaskP.innerHTML + '%')
+        let splitOne
+        if (localStorage.localS.search(novaTaskP.innerHTML + '<%/') >= 0) {
+          splitOne = localStorage.localS.split(novaTaskP.innerHTML + '<%/')
+        } else {
+          splitOne = localStorage.localS.split(novaTaskP.innerHTML + '<%')
+        }
         localStorage.localS = splitOne[0] + splitOne[1]
         console.log(localStorage.localS)
         novaTask.remove()
@@ -79,6 +193,18 @@ function addtask() {
     for (const task of tasks) {
       const iconClicked = task.firstChild.isSameNode(novaTaskP)
       if (iconClicked) {
+        if (localStorage.localS.search(novaTaskP.innerHTML + '<%/') >= 0) {
+          localStorage.localS = localStorage.localS.replace(
+            novaTaskP.innerHTML + '<%/',
+            novaTaskP.innerHTML + '<%'
+          )
+        } else {
+          localStorage.localS = localStorage.localS.replace(
+            novaTaskP.innerHTML + '<%',
+            novaTaskP.innerHTML + '<%/'
+          )
+        }
+
         novaTask.classList.toggle('complete')
         if (novaTask.classList.contains('complete')) {
           novaTask.style.backgroundColor = '#4b4b4b'
